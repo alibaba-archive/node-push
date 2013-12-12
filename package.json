@@ -24,5 +24,9 @@
     "should": "~2.1.1",
     "coffee-script": "~1.6.3",
     "mocha": "~1.15.1"
+  },
+  "dependencies": {
+    "request": "~2.29.0",
+    "async": "~0.2.9"
   }
 }
