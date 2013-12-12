@@ -1,0 +1,28 @@
+{
+  "name": "node-push",
+  "version": "0.0.0",
+  "description": "Pushfication written in Nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/teambition/node-push"
+  },
+  "keywords": [
+    "message",
+    "push"
+  ],
+  "author": "teambition",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/teambition/node-push/issues"
+  },
+  "devDependencies": {
+    "cake-dog": "~0.2.3",
+    "should": "~2.1.1",
+    "coffee-script": "~1.6.3",
+    "mocha": "~1.15.1"
+  }
+}

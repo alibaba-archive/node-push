@@ -1,0 +1,3 @@
+Push = ->
+
+module.exports = Push
