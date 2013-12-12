@@ -6,15 +6,16 @@ baidu = new BaiduPlatform
 
 describe 'push#units/platforms/baidu', ->
 
-  method = 'GET'
+  method = 'POST'
   url = 'http://channel.api.duapp.com/rest/2.0/channel/channel'
   params =
-    method: 'push_msg'
-    apikey: config.apikey
     push_type: 3
     messages: 'Hello World!'
-    msg_keys: '50c32ab5e8cf1439d35a82fb'
-    timestamp: 1386838295
+    msg_keys: 'msg_key'
+    # device_type: 3
+    method: 'push_msg'
+    timestamp: 1386842571
+    apikey: config.apikey
   {secret} = config
 
   describe 'baidu@sign', ->
