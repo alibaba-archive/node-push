@@ -1,8 +1,8 @@
 should = require('should')
-BaiduPlatform = require('../../../lib/platforms/baidu')
+baidu = require('../../../lib/platforms/baidu')
 config = require('../../private/config')
 
-baidu = new BaiduPlatform
+baidu = new baidu.BaiduPlatform
 
 describe 'push#units/platforms/baidu', ->
 
