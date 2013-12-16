@@ -3,6 +3,17 @@ crypto = require('crypto')
 
 class BaiduPlatform
 
+  urlencode = (str) ->
+    encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28')
+    .replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+')
+
+  ksort = (obj) ->
+    keys = _.keys(obj)
+    keys.sort (x, y) -> x > y
+    _obj = {}
+    _obj[k] = obj[k] for k in keys
+    return _obj
+
   errorCallback: (err) ->
     console.error("BAIDU-ERROR: ", err)
 
@@ -15,17 +26,6 @@ class BaiduPlatform
   send: (data, callback = -> ) ->
     console.log 'Baidu sender'
     callback(null, data)
-
-  urlencode = (str) ->
-    encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28')
-    .replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+')
-
-  ksort = (obj) ->
-    keys = _.keys(obj)
-    keys.sort (x, y) -> x > y
-    _obj = {}
-    _obj[k] = obj[k] for k in keys
-    return _obj
 
   sign: (method, url, params, secret) ->
     params = ksort(params)
