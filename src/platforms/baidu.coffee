@@ -1,4 +1,5 @@
 _ = require('underscore')
+request = require('request')
 crypto = require('crypto')
 
 class BaiduPlatform
@@ -32,6 +33,19 @@ class BaiduPlatform
     paramsStr = ("#{k}=#{v}" for k, v of params).join('')
     rawStr = urlencode("#{method}#{url}#{paramsStr}#{secret}")
     crypto.createHash('md5').update(rawStr).digest('hex')
+
+  pushMsg: (data, callback = ->) ->
+    url = 'http://channel.api.duapp.com/rest/2.0/channel/channel'
+    method = 'POST'
+    {secret} = data
+    delete data.secret
+    data.sign = @sign(method, url, data, secret)
+    request
+      uri: url
+      method: method
+      form: data
+    , (err, res, body) ->
+      return callback(err, body)
 
 baidu = new BaiduPlatform
 baidu.BaiduPlatform = BaiduPlatform

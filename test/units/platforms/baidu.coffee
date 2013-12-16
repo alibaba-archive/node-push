@@ -1,4 +1,5 @@
 should = require('should')
+_ = require('underscore')
 baidu = require('../../../lib/platforms/baidu')
 config = require('../../private/config')
 
@@ -13,7 +14,6 @@ describe 'push#units/platforms/baidu', ->
     push_type: 3
     messages: 'Hello World!'
     msg_keys: 'msg_key'
-    # device_type: 3
     method: 'push_msg'
     timestamp: timestamp
     apikey: config.apikey
@@ -24,7 +24,18 @@ describe 'push#units/platforms/baidu', ->
     it 'should return correct sign string', ->
 
       sign = baidu.sign(method, url, params, secret)
-      data = params
+      data = _.clone(params)
       data.sign = sign
       console.log data
 
+  describe 'baidu@push', ->
+
+    it 'should get the correct callback', (done) ->
+
+      data = _.clone(params)
+      data.secret = config.secret
+      baidu.pushMsg data, (err, result) ->
+        console.log result
+        result = JSON.parse(result)
+        result.response_params.success_amount.should.be.eql(1)
+        done()
