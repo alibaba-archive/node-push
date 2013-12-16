@@ -4,6 +4,10 @@ crypto = require('crypto')
 
 class BaiduPlatform
 
+  host: 'http://channel.api.duapp.com'
+  apiUri: '/rest/2.0/channel/channel'
+  apiMethod: 'POST'
+
   urlencode = (str) ->
     encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28')
     .replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+')
@@ -24,25 +28,22 @@ class BaiduPlatform
 
     return @
 
-  send: (data, callback = -> ) ->
-    console.log 'Baidu sender'
-    callback(null, data)
+  sign: (params) ->
 
-  sign: (method, url, params, secret) ->
+    url = @host + @apiUri
+
     params = ksort(params)
     paramsStr = ("#{k}=#{v}" for k, v of params).join('')
-    rawStr = urlencode("#{method}#{url}#{paramsStr}#{secret}")
+    rawStr = urlencode("#{@apiMethod}#{url}#{paramsStr}#{@secret}")
     crypto.createHash('md5').update(rawStr).digest('hex')
 
-  pushMsg: (data, callback = ->) ->
-    url = 'http://channel.api.duapp.com/rest/2.0/channel/channel'
-    method = 'POST'
-    {secret} = data
-    delete data.secret
-    data.sign = @sign(method, url, data, secret)
+  send: (data, callback = ->) ->
+
+    data.sign = @sign(data)
+
     request
-      uri: url
-      method: method
+      uri: @host + @apiUri
+      method: @apiMethod
       form: data
     , (err, res, body) ->
       return callback(err, body)

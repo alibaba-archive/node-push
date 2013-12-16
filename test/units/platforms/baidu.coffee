@@ -33,9 +33,8 @@ describe 'push#units/platforms/baidu', ->
     it 'should get the correct callback', (done) ->
 
       data = _.clone(params)
-      data.secret = config.secret
-      baidu.pushMsg data, (err, result) ->
-        console.log result
+      baidu.secret = config.secret
+      baidu.send data, (err, result) ->
         result = JSON.parse(result)
         result.response_params.success_amount.should.be.eql(1)
         done()

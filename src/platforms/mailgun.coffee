@@ -1,7 +1,6 @@
 
 qs = require('qs')
 https = require('https')
-request  = require('request')
 
 # _ Example _
 #  mailgun.send({
