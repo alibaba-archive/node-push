@@ -7,8 +7,10 @@ class BaiduPlatform
   host: 'http://channel.api.duapp.com'
   apiUri: '/rest/2.0/channel/channel'
   apiMethod: 'POST'
-  apiKey: ''
-  apiSecret: ''
+
+  constructor: ->
+    @apiKey = ''
+    @apiSecret = ''
 
   urlencode = (str) ->
     encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28')
