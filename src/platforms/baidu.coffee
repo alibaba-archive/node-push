@@ -72,8 +72,10 @@ class BaiduPlatform
     # default
     data.apikey = @apiKey
     data.method or= 'push_msg'
+    data.push_type or= 1
     data.timestamp = Math.round(Date.now() / 1000)
     data.msg_keys = @gMsgKeys()
+    data.message_type or= 1
 
     data.sign = @sign(data)
 

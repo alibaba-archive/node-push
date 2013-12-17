@@ -9,26 +9,21 @@ describe 'push#units/platforms/baidu', ->
 
   timestamp = Math.round(Date.now() / 1000)
   params =
-    push_type: 3
-    messages: 'Hello World!'
-    msg_keys: 'msg_key'
-    method: 'push_msg'
-    timestamp: timestamp
-  {apiSecret} = config.baidu
+    messages: JSON.stringify
+      title: 'hello'
+      description: "hello world again"
+    user_id: config.baidu.user_id
 
   describe 'baidu@sign', ->
-
     it 'should return correct sign string', ->
-      data = _.clone(params)
-      data.apikey = config.baidu.apikey
-      data.sign = pusher.baidu.sign(data)
-      console.log data
+      sign = pusher.baidu.sign(params)
+      console.log sign
 
   describe 'baidu@push', ->
 
     it 'should get the correct callback', (done) ->
-      data = _.clone(params)
-      pusher.baidu.send data, (err, result) ->
+      pusher.baidu.send params, (err, result) ->
+        console.log result
         result = JSON.parse(result)
         result.response_params.success_amount.should.be.eql(1)
         done()
