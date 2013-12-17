@@ -33,9 +33,7 @@ class BaiduPlatform
     return @
 
   sign: (params) ->
-
     url = @host + @apiUri
-
     params = ksort(params)
     paramsStr = ("#{k}=#{v}" for k, v of params).join('')
     rawStr = urlencode("#{@apiMethod}#{url}#{paramsStr}#{@apiSecret}")
@@ -63,7 +61,6 @@ class BaiduPlatform
     # default
     data.apikey = @apiKey
     data.method or= 'push_msg'
-    data.push_type or= 3
     data.timestamp = Math.round(Date.now() / 1000)
 
     data.sign = @sign(data)

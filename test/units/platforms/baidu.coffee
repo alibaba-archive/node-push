@@ -1,14 +1,12 @@
 should = require('should')
 _ = require('underscore')
-baidu = require('../../../lib/platforms/baidu')
 config = require('../../private/config')
+pusher = require('../../../lib')
 
-baidu = new baidu.BaiduPlatform
+pusher.configure(config)
 
 describe 'push#units/platforms/baidu', ->
 
-  method = 'POST'
-  url = 'http://channel.api.duapp.com/rest/2.0/channel/channel'
   timestamp = Math.round(Date.now() / 1000)
   params =
     push_type: 3
@@ -16,25 +14,21 @@ describe 'push#units/platforms/baidu', ->
     msg_keys: 'msg_key'
     method: 'push_msg'
     timestamp: timestamp
-    apikey: config.apikey
-  {secret} = config
+  {apiSecret} = config.baidu
 
   describe 'baidu@sign', ->
 
     it 'should return correct sign string', ->
-
-      sign = baidu.sign(method, url, params, secret)
       data = _.clone(params)
-      data.sign = sign
+      data.apikey = config.baidu.apikey
+      data.sign = pusher.baidu.sign(data)
       console.log data
 
   describe 'baidu@push', ->
 
     it 'should get the correct callback', (done) ->
-
       data = _.clone(params)
-      baidu.secret = config.secret
-      baidu.send data, (err, result) ->
+      pusher.baidu.send data, (err, result) ->
         result = JSON.parse(result)
         result.response_params.success_amount.should.be.eql(1)
         done()
