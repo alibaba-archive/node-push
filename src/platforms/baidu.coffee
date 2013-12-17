@@ -7,6 +7,8 @@ class BaiduPlatform
   host: 'http://channel.api.duapp.com'
   apiUri: '/rest/2.0/channel/channel'
   apiMethod: 'POST'
+  apiKey: ''
+  apiSecret: ''
 
   urlencode = (str) ->
     encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28')
@@ -34,10 +36,33 @@ class BaiduPlatform
 
     params = ksort(params)
     paramsStr = ("#{k}=#{v}" for k, v of params).join('')
-    rawStr = urlencode("#{@apiMethod}#{url}#{paramsStr}#{@secret}")
+    rawStr = urlencode("#{@apiMethod}#{url}#{paramsStr}#{@apiSecret}")
     crypto.createHash('md5').update(rawStr).digest('hex')
 
-  send: (data, callback = ->) ->
+  #  ref: http://developer.baidu.com/wiki/index.php?title=docs/cplat/push/api/list#push_msg
+  #  method: push_msg
+  #  apikey:
+  #  user_id:
+  #  push_type:
+  #  channel_id: 1:user_id or channel_id 2:tag 3
+  #  tag:
+  #  device_type: 1:browser 2:pc 3:android 4:ios 5:wp
+  #  message_type: 0: message 1: notice
+  #  messages: string | object
+  #  msg_keys: android | browser | pc
+  #  message_expires: 86400
+  #  deploy_status: 1: dev 2: pro
+  #  timestamp:
+  #  sign:
+  #  expires: sign expires
+  #  v:
+  send: (data = {}, callback = ->) ->
+
+    # default
+    data.apikey = @apiKey
+    data.method or= 'push_msg'
+    data.push_type or= 3
+    data.timestamp = Math.round(Date.now() / 1000)
 
     data.sign = @sign(data)
 

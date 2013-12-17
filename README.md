@@ -17,7 +17,9 @@ pusher.configure({
     sound: 'ping.aiff'
     useSandbox: false
   }
-  baidu: {}
+  baidu: {
+    secret: 'your app secret'
+  }
   mailgun: {
     domain: 'leeqiang.mailgun.org'
     apiKey: 'key-1ujk-u1o62lqe4933g3he9ht09f1e0i3'

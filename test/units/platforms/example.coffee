@@ -10,7 +10,9 @@ pusher.configure({
     sound: 'ping.aiff'
     useSandbox: false
   }
-  baidu: {}
+  baidu: {
+    apiKey: 'vZbxWDbmpgAOYNW531U7qO7s'
+  }
   mailgun: {
     domain: 'leeqiang.mailgun.org'
     apiKey: 'key-1ujk-u1o62lqe4933g3he9ht09f1e0i3'
@@ -35,4 +37,9 @@ pusher.apn.send({
   sound: 'ping.aiff'
   extra: {}
 })
-pusher.baidu.send()
+
+pusher.baidu.send({
+  user_id: 'xxx'
+  channel_id: 'xxx'
+  messages: 'hello world'
+})
