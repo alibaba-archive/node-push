@@ -12,6 +12,7 @@ pusher.configure({
   }
   baidu: {
     apiKey: 'vZbxWDbmpgAOYNW531U7qO7s'
+    apiSecret: 'q45ivdrHAkQ7A3j5p956VczMQLi0YwSV'
   }
   mailgun: {
     domain: 'leeqiang.mailgun.org'
@@ -39,7 +40,8 @@ pusher.apn.send({
 })
 
 pusher.baidu.send({
-  user_id: 'xxx'
-  channel_id: 'xxx'
+  user_id: 123456789
+  channel_id: 123456789
   messages: 'hello world'
+  push_type: 1
 })

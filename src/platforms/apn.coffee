@@ -6,12 +6,19 @@ class ApplePushNotification
   gateway = 'gateway.push.apple.com'
 
   useSandbox: false
-  cert: 'cert.pem'
-  key: 'key.pem'
   expiry: 3600 # 1 hour
   sound: 'ping.aiff'
 
-  errorCallback: (err, notice) ->
+  constructor: ->
+    @key = 'cert.pem'
+    @cert = 'key.pem'
+
+  configure: (options = {}) ->
+    for key, val of options
+      @[key] = val
+    return @
+
+  callback: (err, notice) ->
     console.log("APN-ERROR: #{err}, content: #{notice.compiledPayload}")
 
   # deviceToken
@@ -30,7 +37,7 @@ class ApplePushNotification
       cert: @cert
       key: @key
       gateway: if @useSandbox then sandbox_gateway else gateway
-      errorCallback: callback or @errorCallback
+      errorCallback: callback or @callback
     })
 
     myDevice = new apns.Device(data.deviceToken)
@@ -43,11 +50,6 @@ class ApplePushNotification
     note.payload = data.extra if data.extra
 
     connection.pushNotification(note, myDevice)
-
-  configure: (options = {}) ->
-    for key, val of options
-      @[key] = val
-    return @
 
 applePN = new ApplePushNotification
 applePN.ApplePushNotification = ApplePushNotification

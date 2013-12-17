@@ -13,11 +13,13 @@ https = require('https')
 class Mailgun
 
   apiUrl: 'api.mailgun.net'
-  apiKey: ''
-  domain: ''
 
-  errorCallback: (err) ->
-    console.error("MAILGUN-ERROR: ", err)
+  constructor: ->
+    @apiKey = ''
+    @domain = ''
+
+  callback: (err, res) ->
+    console.error("MAILGUN-ERROR: ", err, res)
 
   # apiKey
   # domain
@@ -33,7 +35,9 @@ class Mailgun
   #    html:
   #    text:
   #  - callback: (err, ret) ->
-  send: (data, callback = ->) ->
+  send: (data, callback) ->
+
+    callback or= @callback
 
     unless @apiKey
       throw new Error("apiKey is required")
@@ -50,7 +54,7 @@ class Mailgun
     httpOptions.headers = {}
 
     httpOptions.headers['Content-Type'] = 'application/x-www-form-urlencoded'
-    httpOptions.headers['Content-Length'] = Buffer.byteLength body
+    httpOptions.headers['Content-Length'] = Buffer.byteLength(body)
 
     req = https.request httpOptions, (res) =>
       res.setEncoding 'utf8'
@@ -62,7 +66,7 @@ class Mailgun
         callback(null, JSON.parse(ret))
 
     req.on 'error', (err) ->
-      errorCallback(err)
+      callback(err)
 
     req.end(body)
 
