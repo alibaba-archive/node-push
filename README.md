@@ -21,14 +21,14 @@ pusher.configure({
     secret: 'your app secret'
   }
   mailgun: {
-    domain: 'leeqiang.mailgun.org'
-    apiKey: 'key-1ujk-u1o62lqe4933g3he9ht09f1e0i3'
+    domain: 'your-domian.mailgun.org'
+    apiKey: 'appkey'
   }
 })
 
 pusher.mailgun.send({
-  from: 'SKY <sky@leeqiang.mailgun.org>'
-  to: 'qiang@teambition.com'
+  from: 'SKY <sky@your-domain.mailgun.org>'
+  to: 'xxx@your-domain.com'
   subject: 'test'
   html: 'html'
   text: 'text'
@@ -44,6 +44,13 @@ pusher.apn.send({
   sound: 'ping.aiff'
   extra: {}
 })
-pusher.baidu.send()
+pusher.baidu.send({
+  messages: JSON.stringify
+    title: 'title'
+    description: 'desc'
+    custom_content:
+      badge: 1
+  user_id: 'user_id'
+})
 
 ```
