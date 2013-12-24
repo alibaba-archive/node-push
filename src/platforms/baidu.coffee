@@ -74,7 +74,7 @@ class BaiduPlatform
     data.method or= 'push_msg'
     data.push_type or= 1
     data.timestamp = Math.round(Date.now() / 1000)
-    data.msg_keys = @gMsgKeys()
+    data.msg_keys = 'teambition'
     data.message_type or= 1
 
     data.sign = @sign(data)
