@@ -19,7 +19,7 @@ class Mailgun
     @domain = ''
 
   callback: (err, res) ->
-    console.error("MAILGUN-ERROR: ", err, res)
+    console.error("MAILGUN-ERROR: ", err, res) if err?
 
   # apiKey
   # domain

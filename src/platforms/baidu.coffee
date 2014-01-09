@@ -24,7 +24,7 @@ class BaiduPlatform
     return _obj
 
   callback: (err, res) ->
-    console.error("BAIDU-ERROR: ", err, res)
+    console.error("BAIDU-ERROR: ", err, res) if err?
 
   configure: (options = {}) ->
     for key, val of options
