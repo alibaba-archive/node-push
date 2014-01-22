@@ -1,6 +1,5 @@
 
-qs = require('qs')
-https = require('https')
+request = require('request')
 
 # _ Example _
 #  mailgun.send({
@@ -39,36 +38,42 @@ class Mailgun
 
     callback or= @callback
 
-    unless @apiKey
-      throw new Error("apiKey is required")
     unless @domain
       throw new Error("domain is required")
 
-    httpOptions =
-      host: @apiUrl
+    api = "https://#{@apiUrl}/v2/#{@domain}/messages"
+    @request(api, data, callback)
+
+
+  subscribe: (listAddress, data = {}, callback = ->) ->
+    #    'subscribed': True,
+    #    'address': self.email,
+    #    'name': self.name,
+    #    'description': self.description,
+
+    api = "https://#{@apiUrl}/v2/lists/#{listAddress}/members"
+    @request(api, data, callback)
+
+
+  request: (api, data, callback) ->
+
+    unless @apiKey
+      throw new Error("apiKey is required")
+
+    request {
       method: 'post'
-      path: "/v2/#{@domain}/messages"
-      auth: "api:#{ @apiKey }"
+      url: api
+      auth:
+        user: "api:#{ @apiKey }"
+      form: data
+    }, (err, resp, ret) ->
 
-    body = qs.stringify(data)
-    httpOptions.headers = {}
+      try
+        ret = JSON.parse(ret)
+      catch e
+        err or= e
+      callback(err, ret)
 
-    httpOptions.headers['Content-Type'] = 'application/x-www-form-urlencoded'
-    httpOptions.headers['Content-Length'] = Buffer.byteLength(body)
-
-    req = https.request httpOptions, (res) =>
-      res.setEncoding 'utf8'
-      ret = ''
-      res.on 'data', (chunk) =>
-        ret += chunk
-
-      res.on 'end', =>
-        callback(null, JSON.parse(ret))
-
-    req.on 'error', (err) ->
-      callback(err)
-
-    req.end(body)
 
 mailgun = new Mailgun
 mailgun.Mailgun = Mailgun

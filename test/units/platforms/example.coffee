@@ -31,6 +31,16 @@ pusher.mailgun.send({
   console.log err, ret
 )
 
+pusher.mailgun.subscribe( 'month@leeqiang.mailgun.org', {
+  subscribed: true
+  address: 'qiang@teambition.com'
+  name: 'qiang'
+  description: 'test'
+}, (err, ret) ->
+  console.log err, ret
+)
+
+
 pusher.apn.send({
   deviceToken: 'xxxx'
   alert: 'new message'

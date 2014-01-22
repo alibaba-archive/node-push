@@ -54,3 +54,15 @@ pusher.baidu.send({
 })
 
 ```
+
+# others
+``` mailgun subscribe
+pusher.mailgun.subscribe(`listAddress`, {
+  subscribed: true
+  address: 'your@exmaple.com'
+  name: 'yourname'
+  description: 'your info'
+}, (err, ret) ->
+  console.log err, ret
+)
+```
