@@ -19,7 +19,7 @@ class ApplePushNotification
     return @
 
   callback: (err, notice) ->
-    console.error("APN-ERROR: #{err}, content: #{notice.compiledPayload}") if err?
+    console.error("APN-ERROR: #{err}, content: #{notice?.compiledPayload}") if err?
 
   # deviceToken
   # alert
