@@ -8,6 +8,7 @@ class ApplePushNotification
   useSandbox: false
   expiry: 3600 # 1 hour
   sound: 'ping.aiff'
+  slient: false
 
   constructor: ->
     @key = 'cert.pem'
@@ -48,6 +49,10 @@ class ApplePushNotification
     note.sound = @sound
     note.alert = data.alert
     note.payload = data.extra if data.extra
+
+    if @slient
+      note.sound = ""
+      note['content-available'] = 1
 
     connection.pushNotification(note, myDevice)
 
