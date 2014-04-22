@@ -54,6 +54,14 @@ class Mailgun
     api = "https://#{@apiUrl}/v2/lists/#{listAddress}/members"
     @request(api, data, callback)
 
+  unsubscribe: (listAddress, data = {}, callback = ->) ->
+    #   'subscribed': False
+    #   'name': self.name
+    #   'address': self.email
+
+    api = "https://#{@apiUrl}/v2/lists/#{listAddress}/members/#{data.address}"
+    data.method = 'put'
+    @request(api, data, callback)
 
   request: (api, data, callback) ->
 
@@ -61,7 +69,7 @@ class Mailgun
       throw new Error("apiKey is required")
 
     request {
-      method: 'post'
+      method: data.method or 'post'
       url: api
       auth:
         user: "api:#{ @apiKey }"
