@@ -31,9 +31,6 @@ class ApplePushNotification
     unless data?.deviceToken
       throw new Error('device token is required')
 
-    data.alert or= 'new message'
-    data.badge or= 1
-
     connection = new apns.Connection({
       cert: @cert
       key: @key
@@ -46,11 +43,13 @@ class ApplePushNotification
 
     note.badge = data.badge
     note.expiry = Math.floor(Date.now() / 1000) + @expiry
-    note.sound = @sound
+    if data.hasOwnProperty('sound')
+      note.sound = data.sound
+    else note.sound = @sound
     note.alert = data.alert
     note.payload = data.extra if data.extra
 
-    if @slient
+    if data.slient or @slient
       note.sound = ""
       note['content-available'] = 1
 
