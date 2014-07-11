@@ -75,7 +75,8 @@ class BaiduPlatform
     data.push_type or= 1
     data.timestamp = Math.round(Date.now() / 1000)
     data.msg_keys = 'teambition'
-    data.message_type or= 1
+    unless data.message_type in [0,1]
+      data.message_type = 0
 
     data.sign = @sign(data)
 
