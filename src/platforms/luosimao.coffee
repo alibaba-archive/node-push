@@ -3,7 +3,7 @@ request = require 'request'
 class LuosimaoSMS
 
   sendURI = 'https://sms-api.luosimao.com/v1/send.json'
-  statusURI = 'https://sms-api.luosimao.com/v1/status.json' 
+  statusURI = 'https://sms-api.luosimao.com/v1/status.json'
 
   constructor: ->
     @user = ''
@@ -21,12 +21,11 @@ class LuosimaoSMS
       return callback Error('Message field is required')
     if postData.message.length > 67
       return callback Error('The max length of message field is 67')
-    options = 
+    options =
       uri: sendURI
       useQueryString: true
       method: 'POST'
       encoding: 'utf8'
-      timeout: 5000
       form: postData
       auth:
         user: @user
@@ -39,7 +38,6 @@ class LuosimaoSMS
     options =
       uri: statusURI
       method: 'GET'
-      timeout: 5000
       auth:
         user: @user
         pass: @apiKey

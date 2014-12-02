@@ -8,7 +8,7 @@ describe 'push#units/platforms/luosimao', ->
 
   pusher.configure(config)
 
-  postData = 
+  postData =
     mobile: 11111111111
     message: '夏季炎热，注意防暑降温'
 
