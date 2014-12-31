@@ -24,6 +24,10 @@ pusher.configure({
     domain: 'your-domian.mailgun.org'
     apiKey: 'appkey'
   }
+  luosimao: {
+    user: 'username'
+    apiKey: 'apiKey'
+  }
 })
 
 pusher.mailgun.send({
@@ -51,6 +55,12 @@ pusher.baidu.send({
     custom_content:
       badge: 1
   user_id: 'user_id'
+})
+pusher.luosimao.send({
+  mobile: 1111111111
+  message: '夏季炎热，注意防暑降温'
+}, (err, resp) ->
+  console.log err, resp
 })
 
 ```
