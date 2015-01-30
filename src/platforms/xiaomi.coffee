@@ -15,7 +15,7 @@ class XiaomiPlatform
       @[key] = val
     return @
 
-  send: (data = {}, callback)->
+  send: (data = {}, callback = ->)->
     self = @
 
     uri = self.send_uri + '?' + qs.stringify data
