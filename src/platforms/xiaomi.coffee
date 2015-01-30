@@ -18,11 +18,15 @@ class XiaomiPlatform
   send: (data = {}, callback = ->)->
     self = @
 
+    extra = data.extra
+    delete data.extra
+
     uri = self.send_uri + '?' + qs.stringify data
     request
       uri: uri
       method: self.method
       json: true
+      form: extra
       headers:
         Authorization: "key=#{self.apiSecret}"
     , (err, res, body) ->
