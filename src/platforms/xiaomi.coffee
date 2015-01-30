@@ -13,13 +13,14 @@ class XiaomiPlatform
   configure: (options={}) ->
     for key, val of options
       @[key] = val
+    return @
 
   send: (data = {}, callback)->
     self = @
 
     uri = self.send_uri + '?' + qs.stringify data
     request
-      uri: self.send_uri
+      uri: uri
       method: self.method
       json: true
       headers:
