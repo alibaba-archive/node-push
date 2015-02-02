@@ -26,9 +26,10 @@
     "mocha": "~1.15.1"
   },
   "dependencies": {
-    "request": "~2.29.0",
+    "apn": "~1.6.2",
     "async": "~0.2.9",
-    "underscore": "~1.5.2",
-    "apn": "~1.6.2"
+    "qs": "^2.3.3",
+    "request": "~2.29.0",
+    "underscore": "~1.5.2"
   }
 }
