@@ -63,6 +63,19 @@ pusher.luosimao.send({
   console.log err, resp
 })
 
+pusher.xiaomi.send({
+  description: "发送内容"
+  pass_through: 1
+  payload: "urlencode％20内容"
+  registration_id: 'xiaomi token'
+  title: 'today'
+  notify_type: 2
+  extra: # 额外的数据，key 的用"extra." 开头
+    "extra._objectId": "d2ewed4r"
+    "extra.objectType": 'reminder'
+})
+
+
 ```
 
 # others
