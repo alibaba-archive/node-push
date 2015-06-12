@@ -42,6 +42,7 @@ class ApplePushNotification
     note = new apns.Notification()
 
     note.badge = data.badge
+    note.category = data.category
     note.expiry = Math.floor(Date.now() / 1000) + @expiry
     if data.hasOwnProperty('sound')
       note.sound = data.sound
