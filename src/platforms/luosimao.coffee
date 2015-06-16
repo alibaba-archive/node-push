@@ -31,7 +31,10 @@ class LuosimaoSMS
         user: @user
         pass: @apiKey
     request options, (error, response, body) ->
-      body = JSON.parse(body)
+      try
+        body = JSON.parse(body)
+      catch e
+        error or= e
       callback(error, body)
 
   status: (callback) ->
@@ -43,7 +46,10 @@ class LuosimaoSMS
         pass: @apiKey
       encoding: 'utf8'
     request options, (error, response, body) ->
-      body = JSON.parse(body)
+      try
+        body = JSON.parse(body)
+      catch e
+        error or= e
       callback(error, body)
 
 luosimao = new LuosimaoSMS
