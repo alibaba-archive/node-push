@@ -1,15 +1,14 @@
-
 _ = require('underscore')
+EventEmitter = require('events').EventEmitter
 
-class Pusher
-
+class Pusher extends EventEmitter
   configure: (options) ->
-
     for serv, conf of options
-      try
-        push[serv] = require("./platforms/#{serv}").configure(conf)
-      catch e
-    return push
+      @[serv] = require("./platforms/#{serv}").configure(conf)
+      @[serv].on('error', @onerror.bind(@))
+    return @
+  onerror: (err, source) ->
+    err.source = source
+    @emit('error', err)
 
-push = new Pusher
-exports = module.exports = push
+module.exports = new Pusher

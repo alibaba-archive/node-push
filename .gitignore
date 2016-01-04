@@ -1,2 +1,4 @@
+.DS_Store
 test/private
+lib
 node_modules

@@ -1,7 +1,9 @@
-request = require 'request'
+urllib = require 'urllib'
 qs = require 'qs'
+httpsAgent = new (require('https').Agent)({keepAlive: true})
+EventEmitter = require('events').EventEmitter
 
-class XiaomiPlatform
+class XiaomiPlatform extends EventEmitter
 
   send_uri: 'https://api.xmpush.xiaomi.com/v2/message/regid'
   method: 'POST'
@@ -10,26 +12,31 @@ class XiaomiPlatform
     @apiKey = ''
     @apiSecret = ''
 
-  configure: (options={}) ->
+  configure: (options = {}) ->
     for key, val of options
       @[key] = val
     return @
 
-  send: (data = {}, callback = ->)->
-    self = @
-
+  send: (data = {}) ->
     extra = data.extra
     delete data.extra
+    self = @
 
-    uri = self.send_uri + '?' + qs.stringify data
-    request
-      uri: uri
-      method: self.method
-      json: true
-      form: extra
+    uri = @send_uri + '?' + qs.stringify data
+    urllib.request uri,
+      method: @method
+      contentType: 'json'
+      data: extra
+      httpsAgent: httpsAgent
       headers:
-        Authorization: "key=#{self.apiSecret}"
-    , (err, res, body) ->
-      callback err, body
+        Authorization: "key=#{@apiSecret}"
+    , (err, body, res) ->
+      try
+        body = JSON.parse(body)
+        err or= new Error(body.reason) if body?.result is 'error'
+        self.emit 'error', err, data if err
+      catch e
+        err or= e
+        self.emit 'error', err, data
 
 module.exports = new XiaomiPlatform

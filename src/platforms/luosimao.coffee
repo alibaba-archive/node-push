@@ -1,6 +1,8 @@
-request = require 'request'
+urllib = require('urllib')
+httpsAgent = new (require('https').Agent)({keepAlive: true})
+EventEmitter = require('events').EventEmitter
 
-class LuosimaoSMS
+class LuosimaoSMS extends EventEmitter
 
   sendURI = 'https://sms-api.luosimao.com/v1/send.json'
   statusURI = 'https://sms-api.luosimao.com/v1/status.json'
@@ -14,43 +16,39 @@ class LuosimaoSMS
       @[key] = val
     return @
 
-  send: (postData, callback) ->
+  send: (postData = {}) ->
+    self = @
     if not postData.mobile?
-      return callback Error('Mobile field is required')
+      return @emit 'error', new Error('Mobile field is required')
     if not postData.message?
-      return callback Error('Message field is required')
+      return @emit 'error', new Error('Message field is required')
     if postData.message.length > 67
-      return callback Error('The max length of message field is 67')
-    options =
-      uri: sendURI
-      useQueryString: true
+      return @emit 'error', new Error('The max length of message field is 67')
+    urllib.request sendURI,
       method: 'POST'
-      encoding: 'utf8'
-      form: postData
-      auth:
-        user: @user
-        pass: @apiKey
-    request options, (error, response, body) ->
+      data: postData
+      auth: "#{@user}:#{@apiKey}"
+      agent: httpAgent
+      httpsAgent: httpsAgent
+    , (err, body, resp) ->
       try
-        body = JSON.parse(body)
+        self.emit 'error', err, JSON.parse(body), postData if err
       catch e
-        error or= e
-      callback(error, body)
+        err or= e
+        self.emit 'error', err, body, postData
 
-  status: (callback) ->
-    options =
-      uri: statusURI
+  status: () ->
+    self = @
+    urllib.request statusURI,
       method: 'GET'
-      auth:
-        user: @user
-        pass: @apiKey
-      encoding: 'utf8'
-    request options, (error, response, body) ->
+      auth: "#{@user}:#{@apiKey}"
+      httpsAgent: httpsAgent
+    , (err, body, resp) ->
       try
-        body = JSON.parse(body)
+        self.emit 'error', err, JSON.parse(body), data if err
       catch e
-        error or= e
-      callback(error, body)
+        err or= e
+        self.emit 'error', err, body, data
 
 luosimao = new LuosimaoSMS
 luosimao.LuosimaoSMS = LuosimaoSMS

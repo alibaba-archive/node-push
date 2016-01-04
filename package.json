@@ -4,6 +4,7 @@
   "description": "Pushfication written in Nodejs",
   "main": "index.js",
   "scripts": {
+    "prepublish": "rm -rf lib && coffee -o lib -c src",
     "test": "make test"
   },
   "repository": {
@@ -29,7 +30,7 @@
     "apn": "^1.7.4",
     "async": "~0.2.9",
     "qs": "^2.3.3",
-    "request": "~2.29.0",
-    "underscore": "~1.5.2"
+    "underscore": "~1.5.2",
+    "urllib": "^2.6.0"
   }
 }
