@@ -1,6 +1,7 @@
 apns = require('apn')
+EventEmitter = require('events').EventEmitter
 
-class ApplePushNotification
+class ApplePushNotification extends EventEmitter
 
   sandbox_gateway = 'gateway.sandbox.push.apple.com'
   gateway = 'gateway.push.apple.com'
@@ -9,34 +10,29 @@ class ApplePushNotification
   expiry: 3600 # 1 hour
   sound: 'ping.aiff'
   slient: false
+  maxConnections: 5
 
   constructor: ->
     @key = 'cert.pem'
     @cert = 'key.pem'
 
   configure: (options = {}) ->
+    self = @
     for key, val of options
       @[key] = val
-    return @
-
-  callback: (err, notice) ->
-    console.error("APN-ERROR: #{err}, content: #{notice?.compiledPayload}") if err?
-
-  # deviceToken
-  # alert
-  # badge = 1
-  # extra = {}
-  send: (data, callback) ->
-
-    unless data?.deviceToken
-      throw new Error('device token is required')
-
-    connection = new apns.Connection({
+    @connection = new apns.Connection({
       cert: @cert
       key: @key
       gateway: if @useSandbox then sandbox_gateway else gateway
-      errorCallback: callback or @callback
+      maxConnections: @maxConnections
+      errorCallback: (error, notice) -> 
+        error.notice = notice
+        self.emit 'error', error
     })
+    return @
+
+  send: (data = {}) ->
+    return @emit('error', new Error('device token is required')) unless data?.deviceToken
 
     myDevice = new apns.Device(data.deviceToken)
     note = new apns.Notification()
@@ -54,7 +50,9 @@ class ApplePushNotification
       note.sound = ""
       note['content-available'] = 1
 
-    connection.pushNotification(note, myDevice)
+    @connection.pushNotification(note, myDevice)
+
+
 
 applePN = new ApplePushNotification
 applePN.ApplePushNotification = ApplePushNotification

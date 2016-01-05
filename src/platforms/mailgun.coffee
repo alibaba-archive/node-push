@@ -1,5 +1,6 @@
-
-request = require('request')
+EventEmitter = require('events').EventEmitter
+urllib = require('urllib')
+httpsAgent = new (require('https').Agent)({keepAlive: true})
 
 # _ Example _
 #  mailgun.send({
@@ -9,16 +10,13 @@ request = require('request')
 #    html: '<h1>Qiang, 您好</h1>'
 #    text: 'Qiang, 您好'
 #  })
-class Mailgun
+class Mailgun extends EventEmitter
 
   apiUrl: 'api.mailgun.net'
 
   constructor: ->
     @apiKey = ''
     @domain = ''
-
-  callback: (err, res) ->
-    console.error("MAILGUN-ERROR: ", err, res) if err?
 
   # apiKey
   # domain
@@ -35,53 +33,47 @@ class Mailgun
   #    text:
   #  - callback: (err, ret) ->
   send: (data, callback) ->
-
-    callback or= @callback
-
-    unless @domain
-      throw new Error("domain is required")
-
+    return @emit 'error', new Error("domain is required") unless @domain
     api = "https://#{@apiUrl}/v2/#{@domain}/messages"
     @request(api, data, callback)
 
+  callback: (err) ->
+    @emit 'error', err if err
 
-  subscribe: (listAddress, data = {}, callback = ->) ->
-    #    'subscribed': True,
-    #    'address': self.email,
-    #    'name': self.name,
-    #    'description': self.description,
-
+  addSubscribe: (listAddress, data = {}, callback) ->
     api = "https://#{@apiUrl}/v2/lists/#{listAddress}/members"
+    data.method = 'POST'
     @request(api, data, callback)
 
-  unsubscribe: (listAddress, data = {}, callback = ->) ->
-    #   'subscribed': False
-    #   'name': self.name
-    #   'address': self.email
-
+  #Deprecated
+  updateSubscribe: (listAddress, data = {}, callback) ->
     api = "https://#{@apiUrl}/v2/lists/#{listAddress}/members/#{data.address}"
-    data.method = 'put'
+    data.method = 'PUT'
+    @request(api, data, callback)
+
+  deleteSubscribe: (listAddress, data = {}, callback) ->
+    api = "https://#{@apiUrl}/v2/lists/#{listAddress}/members/#{data.address}"
+    data.method = 'DELETE'
     @request(api, data, callback)
 
   request: (api, data, callback) ->
-
-    unless @apiKey
-      throw new Error("apiKey is required")
-
-    request {
-      method: data.method or 'post'
-      url: api
-      auth:
-        user: "api:#{ @apiKey }"
-      form: data
-    }, (err, resp, ret) ->
-
+    callback = @callback.bind(@) if typeof callback isnt 'function'
+    return callback(new Error("apiKey is required")) unless @apiKey
+    self = @
+    urllib.request api,
+      method: data.method or 'POST'
+      auth: "api:#{@apiKey}"
+      data: data
+      httpsAgent: httpsAgent
+    , (err, body, resp) ->
       try
-        ret = JSON.parse(ret)
+        body = JSON.parse(body)
+        if resp.statusCode isnt 200
+          err or= new Error(body.error or body.message or body)
+        callback err, body
       catch e
         err or= e
-      callback(err, ret)
-
+        callback err, body
 
 mailgun = new Mailgun
 mailgun.Mailgun = Mailgun

@@ -1,8 +1,11 @@
 _ = require('underscore')
-request = require('request')
+urllib = require('urllib')
+EventEmitter = require('events').EventEmitter
+httpAgent = new (require('http').Agent)({keepAlive: true})
+# httpsAgent = new (require('https').Agent)({keepAlive: true})
 crypto = require('crypto')
 
-class BaiduPlatform
+class BaiduPlatform extends EventEmitter
 
   host: 'http://channel.api.duapp.com'
   apiUri: '/rest/2.0/channel/channel'
@@ -23,13 +26,9 @@ class BaiduPlatform
     _obj[k] = obj[k] for k in keys
     return _obj
 
-  callback: (err, res) ->
-    console.error("BAIDU-ERROR: ", err, res) if err?
-
   configure: (options = {}) ->
     for key, val of options
       @[key] = val
-
     return @
 
   sign: (params) ->
@@ -67,9 +66,9 @@ class BaiduPlatform
   #  sign:
   #  expires: sign expires
   #  v:
-  send: (data = {}, callback) ->
-
+  send: (data = {}) ->
     # default
+    self = @
     data.apikey = @apiKey
     data.method or= 'push_msg'
     data.push_type or= 1
@@ -80,16 +79,19 @@ class BaiduPlatform
 
     data.sign = @sign(data)
 
-    callback or= @callback
-    request
-      uri: @host + @apiUri
+    urllib.request @host + @apiUri,
       method: @apiMethod
-      form: data
-    , (err, res, body) ->
+      data: data
+      agent: httpAgent
+      # httpsAgent: httpsAgent
+    , (err, body, res) ->
       try
-        callback(err, JSON.parse(body))
+        body = JSON.parse(body)
+        err or= new Error(body.error_msg) if body.error_code
+        self.emit 'error', err if err
       catch e
-        callback(e, body)
+        err or= e
+        self.emit 'error', err
 
 baidu = new BaiduPlatform
 baidu.BaiduPlatform = BaiduPlatform

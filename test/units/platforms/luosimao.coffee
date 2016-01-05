@@ -1,8 +1,6 @@
 should = require 'should'
-pusher = require '../../../lib'
+pusher = require '../../../src'
 config = require('../../private/config')
-
-
 
 describe 'push#units/platforms/luosimao', ->
 

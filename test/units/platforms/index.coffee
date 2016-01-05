@@ -1,2 +1,3 @@
-require('./baidu')
-require('./luosimao')
+require('./xiaomi')
+require('./apn')
+require('./mailgun')
