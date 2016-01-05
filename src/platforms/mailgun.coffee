@@ -37,7 +37,7 @@ class Mailgun extends EventEmitter
     api = "https://#{@apiUrl}/v2/#{@domain}/messages"
     @request(api, data, callback)
 
-  onerror: (err) ->
+  callback: (err) ->
     @emit 'error', err if err
 
   addSubscribe: (listAddress, data = {}, callback) ->
@@ -57,7 +57,7 @@ class Mailgun extends EventEmitter
     @request(api, data, callback)
 
   request: (api, data, callback) ->
-    callback = @onerror.bind(@) if typeof callback isnt 'function'
+    callback = @callback.bind(@) if typeof callback isnt 'function'
     return callback(new Error("apiKey is required")) unless @apiKey
     self = @
     urllib.request api,

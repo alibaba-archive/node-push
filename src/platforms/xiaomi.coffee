@@ -34,9 +34,9 @@ class XiaomiPlatform extends EventEmitter
       try
         body = JSON.parse(body)
         err or= new Error(body.reason) if body?.result is 'error'
-        self.emit 'error', err, data if err
+        self.emit 'error', err if err
       catch e
         err or= e
-        self.emit 'error', err, data
+        self.emit 'error', err
 
 module.exports = new XiaomiPlatform

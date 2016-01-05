@@ -68,6 +68,7 @@ class BaiduPlatform extends EventEmitter
   #  v:
   send: (data = {}) ->
     # default
+    self = @
     data.apikey = @apiKey
     data.method or= 'push_msg'
     data.push_type or= 1
@@ -85,10 +86,12 @@ class BaiduPlatform extends EventEmitter
       # httpsAgent: httpsAgent
     , (err, body, res) ->
       try
-        self.emit 'error', err, JSON.parse(body), data if err
+        body = JSON.parse(body)
+        err or= new Error(body.error_msg) if body.error_code
+        self.emit 'error', err if err
       catch e
         err or= e
-        self.emit 'error', err, body, data
+        self.emit 'error', err
 
 baidu = new BaiduPlatform
 baidu.BaiduPlatform = BaiduPlatform

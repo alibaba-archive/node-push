@@ -17,6 +17,7 @@ class ApplePushNotification extends EventEmitter
     @cert = 'key.pem'
 
   configure: (options = {}) ->
+    self = @
     for key, val of options
       @[key] = val
     @connection = new apns.Connection({
@@ -24,14 +25,14 @@ class ApplePushNotification extends EventEmitter
       key: @key
       gateway: if @useSandbox then sandbox_gateway else gateway
       maxConnections: @maxConnections
-      errorCallback: @onerror.bind(@)
+      errorCallback: (error, notice) -> 
+        error.notice = notice
+        self.emit 'error', error
     })
     return @
-  onerror: (error, notice) ->
-    @emit 'error', error, notice
 
   send: (data = {}) ->
-    return @onerror(new Error('device token is required')) unless data?.deviceToken
+    return @emit('error', new Error('device token is required')) unless data?.deviceToken
 
     myDevice = new apns.Device(data.deviceToken)
     note = new apns.Notification()
@@ -50,6 +51,8 @@ class ApplePushNotification extends EventEmitter
       note['content-available'] = 1
 
     @connection.pushNotification(note, myDevice)
+
+
 
 applePN = new ApplePushNotification
 applePN.ApplePushNotification = ApplePushNotification

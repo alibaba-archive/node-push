@@ -32,10 +32,12 @@ class LuosimaoSMS extends EventEmitter
       httpsAgent: httpsAgent
     , (err, body, resp) ->
       try
-        self.emit 'error', err, JSON.parse(body), postData if err
+        body = JSON.parse(body)
+        err or= new Error(body.msg) if body.error
+        self.emit 'error', err if err
       catch e
         err or= e
-        self.emit 'error', err, body, postData
+        self.emit 'error', err
 
   status: () ->
     self = @
@@ -45,10 +47,12 @@ class LuosimaoSMS extends EventEmitter
       httpsAgent: httpsAgent
     , (err, body, resp) ->
       try
-        self.emit 'error', err, JSON.parse(body), data if err
+        body = JSON.parse(body)
+        err or= new Error(body.msg) if body.error
+        self.emit 'error', err if err
       catch e
         err or= e
-        self.emit 'error', err, body, data
+        self.emit 'error', err
 
 luosimao = new LuosimaoSMS
 luosimao.LuosimaoSMS = LuosimaoSMS
