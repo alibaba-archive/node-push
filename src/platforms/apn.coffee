@@ -3,14 +3,12 @@ EventEmitter = require('events').EventEmitter
 
 class ApplePushNotification extends EventEmitter
 
-  sandbox_gateway = 'gateway.sandbox.push.apple.com'
-  gateway = 'gateway.push.apple.com'
-
-  useSandbox: false
-  expiry: 3600 # 1 hour
-  sound: 'ping.aiff'
-  slient: false
-  maxConnections: 5
+  options:
+    useSandbox: false
+    expiry: 3600 # 1 hour
+    sound: 'ping.aiff'
+    slient: false
+    maxConnections: 5
 
   constructor: ->
     @key = 'cert.pem'
@@ -19,17 +17,27 @@ class ApplePushNotification extends EventEmitter
   configure: (options = {}) ->
     self = @
     for key, val of options
-      @[key] = val
-    @connection = new apns.Connection({
-      cert: @cert
-      key: @key
-      gateway: if @useSandbox then sandbox_gateway else gateway
+      @options[key] = val
+    connectionOptions =
+      cert: @options.cert
+      key: @options.key
+      production: !@useSandbox
       maxConnections: @maxConnections
-      errorCallback: (error, notice) -> 
-        error.notice = notice
-        self.emit 'error', error
-    })
+    @connection = new apns.Connection connectionOptions
+    @connection.on('error', (error) => @emit 'error', error)
     return @
+
+  getInvalidDevices: (callback) ->
+    connectionOptions =
+      cert: @options.cert
+      key: @options.key
+      production: !@useSandbox
+      maxConnections: @maxConnections
+    feedback = new apns.Feedback connectionOptions
+    feedback.on('error', (error) => @emit 'error', error)
+    feedback.on('feedback', (rows) ->
+      callback(null, rows.map (row)-> return row.device.toString())
+    )
 
   send: (data = {}) ->
     return @emit('error', new Error('device token is required')) unless data?.deviceToken
@@ -51,8 +59,6 @@ class ApplePushNotification extends EventEmitter
       note['content-available'] = 1
 
     @connection.pushNotification(note, myDevice)
-
-
 
 applePN = new ApplePushNotification
 applePN.ApplePushNotification = ApplePushNotification

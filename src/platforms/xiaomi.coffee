@@ -5,38 +5,53 @@ httpsAgent = new (require('https').Agent)({keepAlive: true})
 
 class XiaomiPlatform extends EventEmitter
 
-  send_uri: 'https://api.xmpush.xiaomi.com/v2/message/regid'
-  method: 'POST'
+  options:
+    apiKey: ''
+    apiSecret: ''
+    send_uri: 'https://api.xmpush.xiaomi.com/v2/message/regid'
+    invalid_regid_uri: 'https://feedback.xmpush.xiaomi.com/v1/feedback/fetch_invalid_regids'
+    method: 'POST'
 
-  constructor: ->
-    @apiKey = ''
-    @apiSecret = ''
+  getInvalidDevices: (callback) ->
+    urllib.request @options.invalid_regid_uri,
+      httpsAgent: httpsAgent
+      headers:
+        Authorization: "key=#{@options.apiSecret}"
+    , (err, body, res) ->
+      try
+        list = []
+        body = JSON.parse(body)
+        err or= new Error(body.reason) if body?.result is 'error'
+        list = body.data.list
+        callback(err, list)
+      catch e
+        err or= e
+        callback(err, body)
 
   configure: (options = {}) ->
     for key, val of options
-      @[key] = val
+      @options[key] = val
     return @
 
   send: (data = {}) ->
     extra = data.extra
     delete data.extra
-    self = @
 
-    uri = @send_uri + '?' + qs.stringify(data)
+    uri = @options.send_uri + '?' + qs.stringify(data)
     urllib.request uri,
-      method: @method
+      method: @options.method
       contentType: 'json'
       data: extra
       httpsAgent: httpsAgent
       headers:
-        Authorization: "key=#{@apiSecret}"
-    , (err, body, res) ->
+        Authorization: "key=#{@options.apiSecret}"
+    , (err, body, res) =>
       try
         body = JSON.parse(body)
-        err or= new Error(body.reason) if body?.result is 'error'
-        self.emit 'error', err if err
+        err or= new Error(body.reason) if body.result is 'error'
+        @emit 'error', err if err
       catch e
         err or= e
-        self.emit 'error', err
+        @emit 'error', err
 
 module.exports = new XiaomiPlatform
