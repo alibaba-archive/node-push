@@ -12,12 +12,10 @@ httpsAgent = new (require('https').Agent)({keepAlive: true})
 #  })
 class Mailgun extends EventEmitter
 
-  apiUrl: 'api.mailgun.net'
-
-  constructor: ->
-    @options =
-      apiKey: ''
-      domain: ''
+  options:
+    apiUrl: 'api.mailgun.net'
+    apiKey: ''
+    domain: ''
 
   # apiKey
   # domain
@@ -35,25 +33,25 @@ class Mailgun extends EventEmitter
   #  - callback: (err, ret) ->
   send: (data, callback) ->
     return @emit 'error', new Error("domain is required") unless @options.domain
-    api = "https://#{@apiUrl}/v2/#{@options.domain}/messages"
+    api = "https://#{@options.apiUrl}/v2/#{@options.domain}/messages"
     @request(api, data, callback)
 
   callback: (err) ->
     @emit 'error', err if err
 
   addSubscribe: (listAddress, data = {}, callback) ->
-    api = "https://#{@apiUrl}/v2/lists/#{listAddress}/members"
+    api = "https://#{@options.apiUrl}/v2/lists/#{listAddress}/members"
     data.method = 'POST'
     @request(api, data, callback)
 
   #Deprecated
   updateSubscribe: (listAddress, data = {}, callback) ->
-    api = "https://#{@apiUrl}/v2/lists/#{listAddress}/members/#{data.address}"
+    api = "https://#{@options.apiUrl}/v2/lists/#{listAddress}/members/#{data.address}"
     data.method = 'PUT'
     @request(api, data, callback)
 
   deleteSubscribe: (listAddress, data = {}, callback) ->
-    api = "https://#{@apiUrl}/v2/lists/#{listAddress}/members/#{data.address}"
+    api = "https://#{@options.apiUrl}/v2/lists/#{listAddress}/members/#{data.address}"
     data.method = 'DELETE'
     @request(api, data, callback)
 
@@ -71,10 +69,9 @@ class Mailgun extends EventEmitter
         body = JSON.parse(body)
         if resp.statusCode isnt 200
           err or= new Error(body.error or body.message or body)
-        callback err, body
       catch e
         err or= e
-        callback err, body
+      callback err, body
 
 mailgun = new Mailgun
 mailgun.Mailgun = Mailgun
