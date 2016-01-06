@@ -1,4 +1,3 @@
-_ = require('underscore')
 urllib = require('urllib')
 EventEmitter = require('events').EventEmitter
 httpAgent = new (require('http').Agent)({keepAlive: true})
@@ -20,7 +19,7 @@ class BaiduPlatform extends EventEmitter
     .replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+')
 
   ksort = (obj) ->
-    keys = _.keys(obj)
+    keys = Object.keys(obj)
     keys.sort (x, y) -> x > y
     _obj = {}
     _obj[k] = obj[k] for k in keys

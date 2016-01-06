@@ -1,6 +1,5 @@
 assert = require('assert')
 qs = require('querystring')
-_ = require('underscore')
 config = require('../../private/config')
 pusher = require('../../../src/')
 

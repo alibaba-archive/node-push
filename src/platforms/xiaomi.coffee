@@ -1,7 +1,7 @@
-urllib = require 'urllib'
-qs = require 'qs'
-httpsAgent = new (require('https').Agent)({keepAlive: true})
+urllib = require('urllib')
+qs = require('querystring')
 EventEmitter = require('events').EventEmitter
+httpsAgent = new (require('https').Agent)({keepAlive: true})
 
 class XiaomiPlatform extends EventEmitter
 
@@ -22,7 +22,7 @@ class XiaomiPlatform extends EventEmitter
     delete data.extra
     self = @
 
-    uri = @send_uri + '?' + qs.stringify data
+    uri = @send_uri + '?' + qs.stringify(data)
     urllib.request uri,
       method: @method
       contentType: 'json'

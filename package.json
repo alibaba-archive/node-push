@@ -1,6 +1,6 @@
 {
   "name": "node-push",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Pushfication written in Nodejs",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,9 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/teambition/node-push"
+  },
+  "engines": {
+    "node": ">=0.10.40"
   },
   "keywords": [
     "message",
@@ -27,9 +30,7 @@
     "mocha": "~2.3.4"
   },
   "dependencies": {
-    "apn": "^1.7.5",
-    "qs": "^6.0.1",
-    "underscore": "~1.8.3",
+    "apn": "~1.7.5",
     "urllib": "^2.6.0"
   },
   "files": [
