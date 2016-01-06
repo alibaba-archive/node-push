@@ -15,14 +15,15 @@ class Mailgun extends EventEmitter
   apiUrl: 'api.mailgun.net'
 
   constructor: ->
-    @apiKey = ''
-    @domain = ''
+    @options =
+      apiKey: ''
+      domain: ''
 
   # apiKey
   # domain
   configure: (options = {}) ->
     for key, val of options
-      @[key] = val
+      @options[key] = val
     return @
 
   #  - data
@@ -33,8 +34,8 @@ class Mailgun extends EventEmitter
   #    text:
   #  - callback: (err, ret) ->
   send: (data, callback) ->
-    return @emit 'error', new Error("domain is required") unless @domain
-    api = "https://#{@apiUrl}/v2/#{@domain}/messages"
+    return @emit 'error', new Error("domain is required") unless @options.domain
+    api = "https://#{@apiUrl}/v2/#{@options.domain}/messages"
     @request(api, data, callback)
 
   callback: (err) ->
@@ -58,11 +59,11 @@ class Mailgun extends EventEmitter
 
   request: (api, data, callback) ->
     callback = @callback.bind(@) if typeof callback isnt 'function'
-    return callback(new Error("apiKey is required")) unless @apiKey
+    return callback(new Error("apiKey is required")) unless @options.apiKey
     self = @
     urllib.request api,
       method: data.method or 'POST'
-      auth: "api:#{@apiKey}"
+      auth: "api:#{@options.apiKey}"
       data: data
       httpsAgent: httpsAgent
     , (err, body, resp) ->
