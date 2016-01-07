@@ -25,13 +25,14 @@ class ApplePushNotification extends EventEmitter
     @connection.on('error', (error) => @emit('error', error))
     return @
 
-  getInvalidDevices: (callback) ->
+  getInvalidDevices: (callback = ->) ->
     connectionOptions =
       cert: @options.cert
       key: @options.key
       production: !@options.useSandbox
       maxConnections: @options.maxConnections
     feedback = new apns.Feedback connectionOptions
+    feedback.on('error', (error) -> callback(error))
     feedback.on('feedback', (rows) ->
       callback(null, rows.map((row) -> row.device.toString()))
     )
