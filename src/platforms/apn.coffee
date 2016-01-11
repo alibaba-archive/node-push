@@ -1,16 +1,20 @@
 apns = require('apn')
 EventEmitter = require('events').EventEmitter
 
+defaultOptions =
+  key: 'cert.pem'
+  cert: 'key.pem'
+  useSandbox: false
+  expiry: 3600 # 1 hour
+  sound: 'ping.aiff'
+  slient: false
+  maxConnections: 5
+
 class ApplePushNotification extends EventEmitter
 
-  options:
-    key: 'cert.pem'
-    cert: 'key.pem'
-    useSandbox: false
-    expiry: 3600 # 1 hour
-    sound: 'ping.aiff'
-    slient: false
-    maxConnections: 5
+  constructor: ->
+    super
+    @options = Object.create(defaultOptions)
 
   configure: (options = {}) ->
     self = @
@@ -25,20 +29,23 @@ class ApplePushNotification extends EventEmitter
     @connection.on('error', (error) => @emit('error', error))
     return @
 
-  getInvalidDevices: (callback = ->) ->
+  getInvalidDevices: (callback) ->
     connectionOptions =
       cert: @options.cert
       key: @options.key
       production: !@options.useSandbox
       maxConnections: @options.maxConnections
     feedback = new apns.Feedback connectionOptions
-    feedback.on('error', (error) -> callback(error))
+    feedback.once('error', callback)
     feedback.on('feedback', (rows) ->
       callback(null, rows.map((row) -> row.device.toString()))
     )
 
   send: (data = {}) ->
-    return @emit('error', new Error('device token is required')) unless data?.deviceToken
+    unless data?.deviceToken
+      err = new Error('device token is required')
+      err.data = data
+      return @emit('error', err)
 
     myDevice = new apns.Device(data.deviceToken)
     note = new apns.Notification()

@@ -1,5 +1,5 @@
-pusher = require('../../../src/')
-config = require('../../private/config')
+pusher = require('../../src/')
+config = require('../private/config')
 
 pusher.configure(config)
 

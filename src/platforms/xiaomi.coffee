@@ -3,14 +3,18 @@ qs = require('querystring')
 EventEmitter = require('events').EventEmitter
 httpsAgent = new (require('https').Agent)({keepAlive: true})
 
+defaultOptions =
+  apiKey: ''
+  apiSecret: ''
+  send_uri: 'https://api.xmpush.xiaomi.com/v2/message/regid'
+  invalid_regid_uri: 'https://feedback.xmpush.xiaomi.com/v1/feedback/fetch_invalid_regids'
+  method: 'POST'
+
 class XiaomiPlatform extends EventEmitter
 
-  options:
-    apiKey: ''
-    apiSecret: ''
-    send_uri: 'https://api.xmpush.xiaomi.com/v2/message/regid'
-    invalid_regid_uri: 'https://feedback.xmpush.xiaomi.com/v1/feedback/fetch_invalid_regids'
-    method: 'POST'
+  constructor: ->
+    super
+    @options = Object.create(defaultOptions)
 
   getInvalidDevices: (callback) ->
     urllib.request @options.invalid_regid_uri,

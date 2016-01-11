@@ -1,7 +1,7 @@
 assert = require('assert')
 qs = require('querystring')
-config = require('../../private/config')
-pusher = require('../../../src/')
+config = require('../private/config')
+pusher = require('../../src/')
 
 pusher.configure(config)
 

@@ -2,6 +2,10 @@ EventEmitter = require('events').EventEmitter
 urllib = require('urllib')
 httpsAgent = new (require('https').Agent)({keepAlive: true})
 
+defaultOptions =
+  apiUrl: 'api.mailgun.net'
+  apiKey: ''
+  domain: ''
 # _ Example _
 #  mailgun.send({
 #    from: 'SKY <sky@leeqiang.mailgun.org>'
@@ -12,13 +16,10 @@ httpsAgent = new (require('https').Agent)({keepAlive: true})
 #  })
 class Mailgun extends EventEmitter
 
-  options:
-    apiUrl: 'api.mailgun.net'
-    apiKey: ''
-    domain: ''
+  constructor: ->
+    super
+    @options = Object.create(defaultOptions)
 
-  # apiKey
-  # domain
   configure: (options = {}) ->
     for key, val of options
       @options[key] = val
