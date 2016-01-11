@@ -89,3 +89,32 @@ pusher.mailgun.subscribe(`listAddress`, {
   console.log err, ret
 )
 ```
+
+# API
+
+## configure(options)
+- TODO
+
+## apns.push(object)
+push a message via APNs to certain device. The `object` include
+- deviceToken: `hex`ed apple device token
+- alert: 
+- category:
+- badge:
+- sound:
+
+## apns.getInvalidDevices(callback(error, list))
+return a list with invalid device's hex
+
+## xiaomi.push(object)
+push a message via XIAOMI to certain device. The `object` include
+- registration_id: (string) xiaomi device token
+- description:
+- pass_through:
+- payload:
+- title:
+- notify_type:
+
+## xiaomi.getInvalidDevices(callback(error, list))
+return a list with invalid device's hex
+
