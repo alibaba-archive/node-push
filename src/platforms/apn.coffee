@@ -26,6 +26,12 @@ class ApplePushNotification extends EventEmitter
       production: !@options.useSandbox
       maxConnections: @options.maxConnections
     @connection = new apns.Connection connectionOptions
+    @connection.on('transmissionError', (errCode, notification, device) =>
+      error = new Error('transmissionError ' + errCode)
+      error.notification = notification
+      error.device = device.toString()
+      @emit('error', error)
+    )
     @connection.on('error', (error) => @emit('error', error))
     return @
 
@@ -62,7 +68,6 @@ class ApplePushNotification extends EventEmitter
     if data.slient or @options.slient
       note.sound = ""
       note['content-available'] = 1
-
     @connection.pushNotification(note, myDevice)
 
 applePN = new ApplePushNotification
