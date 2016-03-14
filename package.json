@@ -1,6 +1,6 @@
 {
   "name": "node-push",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Pushfication written in Nodejs",
   "main": "index.js",
   "scripts": {
@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "apn": "~1.7.5",
+    "socks5-https-client": "^1.1.2",
     "urllib": "^2.6.0"
   },
   "files": [
