@@ -1,8 +1,8 @@
 {
   "name": "node-push",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Pushfication written in Nodejs",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "prepublish": "rm -rf lib && coffee -o lib -c src",
     "test": "make test"
@@ -35,7 +35,6 @@
     "urllib": "^2.6.0"
   },
   "files": [
-    "index.js",
     "lib",
     "README.md"
   ]
