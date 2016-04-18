@@ -74,6 +74,7 @@ pusher.xiaomi.send({
     "extra._objectId": "d2ewed4r"
     "extra.objectType": 'reminder'
 })
+```
 
 
 # others
