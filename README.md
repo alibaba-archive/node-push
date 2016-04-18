@@ -6,7 +6,7 @@ Pushfication written in Nodejs
 
 # How to use
 
-```
+```js
 pusher = require('node-push')
 
 pusher.configure({
@@ -76,10 +76,9 @@ pusher.xiaomi.send({
 })
 
 
-```
-
 # others
-``` mailgun subscribe
+mailgun subscribe
+```js
 pusher.mailgun.subscribe(`listAddress`, {
   subscribed: true
   address: 'your@exmaple.com'
