@@ -2,8 +2,6 @@ apns = require('apn')
 EventEmitter = require('events').EventEmitter
 
 defaultOptions =
-  key: 'cert.pem'
-  cert: 'key.pem'
   useSandbox: false
   expiry: 3600 # 1 hour
   sound: 'ping.aiff'
@@ -23,6 +21,8 @@ class ApplePushNotification extends EventEmitter
     connectionOptions =
       cert: @options.cert
       key: @options.key
+      pfx: @options.pfx
+      passphrase: @options.passphrase
       production: !@options.useSandbox
       maxConnections: @options.maxConnections
     @connection = new apns.Connection connectionOptions
@@ -39,6 +39,8 @@ class ApplePushNotification extends EventEmitter
     connectionOptions =
       cert: @options.cert
       key: @options.key
+      pfx: @options.pfx
+      passphrase: @options.passphrase
       production: !@options.useSandbox
       maxConnections: @options.maxConnections
     feedback = new apns.Feedback connectionOptions
