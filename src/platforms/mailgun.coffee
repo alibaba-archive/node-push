@@ -1,5 +1,5 @@
 EventEmitter = require('events').EventEmitter
-urllib = require('urllib')
+request = require('request')
 httpsAgent = new (require('https').Agent)({keepAlive: true})
 
 defaultOptions =
@@ -60,7 +60,8 @@ class Mailgun extends EventEmitter
     callback = @callback.bind(@) if typeof callback isnt 'function'
     return callback(new Error("apiKey is required")) unless @options.apiKey
     self = @
-    urllib.request api,
+    request
+      url: api
       method: data.method or 'POST'
       auth: "api:#{@options.apiKey}"
       data: data
