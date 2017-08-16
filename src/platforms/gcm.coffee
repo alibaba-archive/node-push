@@ -1,4 +1,4 @@
-urllib = require('urllib')
+request = require('request')
 Sock5Agent = require('socks5-https-client/lib/Agent')
 EventEmitter = require('events').EventEmitter
 Agent = require('https').Agent
@@ -24,12 +24,13 @@ class GCM extends EventEmitter
 
   send: (data = {}) ->
     self = @
-    urllib.request gcmUrl,
-      httpsAgent: @agent,
-      method: 'POST',
+    request
+      url: gcmUrl
+      httpsAgent: @agent
+      method: 'POST'
       headers: Authorization: 'key=' + @options.apiKey
-      dataType: 'json',
-      contentType: 'json',
+      dataType: 'json'
+      contentType: 'json'
       data: data
     , (err, body, resp) ->
       return self.emit(err) if err

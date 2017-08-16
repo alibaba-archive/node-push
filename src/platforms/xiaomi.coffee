@@ -1,4 +1,4 @@
-urllib = require('urllib')
+request = require('request')
 qs = require('querystring')
 EventEmitter = require('events').EventEmitter
 httpsAgent = new (require('https').Agent)({keepAlive: true})
@@ -17,7 +17,8 @@ class XiaomiPlatform extends EventEmitter
     @options = Object.create(defaultOptions)
 
   getInvalidDevices: (callback) ->
-    urllib.request @options.invalid_regid_uri,
+    request
+      url: @options.invalid_regid_uri
       httpsAgent: httpsAgent
       headers:
         Authorization: "key=#{@options.apiSecret}"
@@ -42,7 +43,8 @@ class XiaomiPlatform extends EventEmitter
     delete data.extra
 
     uri = @options.send_uri + '?' + qs.stringify(data)
-    urllib.request uri,
+    request
+      url: uri
       method: @options.method
       contentType: 'json'
       data: extra
