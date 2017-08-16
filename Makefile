@@ -3,15 +3,15 @@ all:
 test: test-apn test-xiaomi test-mailgun test-gcm
 
 test-apn:
-	mocha -t 8000 --reporter spec --compilers coffee:coffee-script/register test/platforms/apn.coffee
+	mocha -t 8000 --reporter spec test/platforms/apn.js
 
 test-mailgun:
-	mocha -t 8000 --reporter spec --compilers coffee:coffee-script/register test/platforms/mailgun.coffee
+	mocha -t 8000 --reporter spec test/platforms/mailgun.js
 
 test-xiaomi:
-	mocha -t 8000 --reporter spec --compilers coffee:coffee-script/register test/platforms/xiaomi.coffee
+	mocha -t 8000 --reporter spec test/platforms/xiaomi.js
 
 test-gcm:
-	mocha -t 8000 --reporter spec --compilers coffee:coffee-script/register test/platforms/gcm.coffee
+	mocha -t 8000 --reporter spec test/platforms/gcm.js
 
 .PHONY: all
