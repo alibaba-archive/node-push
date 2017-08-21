@@ -4,7 +4,8 @@
   "description": "Pushfication written in Nodejs",
   "main": "lib/index.js",
   "scripts": {
-    "test": "standard && make test"
+    "test": "npm run lint && make test",
+    "lint": "standard --env mocha"
   },
   "repository": {
     "type": "git",
