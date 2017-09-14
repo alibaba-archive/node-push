@@ -4,8 +4,10 @@
   "description": "Pushfication written in Nodejs",
   "main": "lib/index.js",
   "scripts": {
-    "test": "npm run lint && make test",
-    "lint": "standard --env mocha"
+    "test": "make test",
+    "pretest": "npm run lint",
+    "lint": "standard --env mocha",
+    "pretty": "prettier-standard 'lib/**/*.js' 'test/**/*.js'"
   },
   "repository": {
     "type": "git",
@@ -24,8 +26,8 @@
     "url": "https://github.com/teambition/node-push/issues"
   },
   "devDependencies": {
-    "cake-dog": "~0.4.5",
     "mocha": "~2.3.4",
+    "prettier-standard": "^6.0.0",
     "should": "~8.0.2",
     "standard": "^10.0.3"
   },

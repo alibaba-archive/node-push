@@ -7,7 +7,8 @@ const pusher = require('../../lib/')
 pusher.configure(config)
 
 describe('push#units/platforms/xiaomi', function () {
-  let userId = 'd//igwEhgBGCI2TG6lWqlFIbnL5m7CRLMujCLirCvinYRpwCJnRqMTL0yfFeJhsXjmg9KEjl+1XxDieNFM7gpZtd+x8w8qGtZ0KMKuWZAn0='
+  let userId =
+    'd//igwEhgBGCI2TG6lWqlFIbnL5m7CRLMujCLirCvinYRpwCJnRqMTL0yfFeJhsXjmg9KEjl+1XxDieNFM7gpZtd+x8w8qGtZ0KMKuWZAn0='
   let params = {
     description: 'hello world',
     pass_through: 1,

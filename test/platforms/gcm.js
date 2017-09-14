@@ -9,7 +9,8 @@ describe('push#units/platforms/gcm', function () {
   describe('gcm@push', function () {
     it('should get the correct without error', function (done) {
       let params = {
-        to: 'd5qC2izz3BQ:APA91bHdzZoXMGgOOx7vAAjavavS4jgA1RdlG6vfnjr5RArxj1GBLXaGpYo-I64yeNAMc3ADH-m9qghPkWS_9Ih5GVUG74YjKo9lpNVkygmNA_T8kZ5VZUF-RwBvnE7opr5ptO603DDV',
+        to:
+          'd5qC2izz3BQ:APA91bHdzZoXMGgOOx7vAAjavavS4jgA1RdlG6vfnjr5RArxj1GBLXaGpYo-I64yeNAMc3ADH-m9qghPkWS_9Ih5GVUG74YjKo9lpNVkygmNA_T8kZ5VZUF-RwBvnE7opr5ptO603DDV',
         data: {
           message: 'hello world'
         }
