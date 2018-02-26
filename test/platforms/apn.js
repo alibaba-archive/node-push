@@ -23,7 +23,7 @@ describe('push#units/platforms/apn', function () {
     it('should get the correct without error', done =>
       pusher.apn.send(params, setTimeout(done, 5000))))
 
-  return describe('apn@feedback', () =>
+  describe('apn@feedback', () =>
     it('should get the devices', function (done) {
       params = {
         deviceToken:
@@ -39,7 +39,7 @@ describe('push#units/platforms/apn', function () {
           return done(error)
         }
         assert.strictEqual(devices instanceof Array, true)
-        return done()
+        done()
       })
     }))
 })

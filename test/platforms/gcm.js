@@ -19,10 +19,10 @@ describe('push#units/platforms/gcm', function () {
           message: 'hello world'
         }
       }
-      return pusher.gcm.send(params, setTimeout(done, 5000))
+      pusher.gcm.send(params, setTimeout(done, 5000))
     }))
 
-  return describe('gcm push invalid device token', () =>
+  describe('gcm push invalid device token', () =>
     it('should get the correct without error', function (done) {
       const params = {
         to: 'abcdefg',
@@ -30,11 +30,11 @@ describe('push#units/platforms/gcm', function () {
           message: 'hello world'
         }
       }
-      return pusher.gcm.send(
+      pusher.gcm.send(
         params,
         pusher.gcm.on('invalid device', function (device) {
           assert.equal(device, params.to)
-          return done()
+          done()
         })
       )
     }))

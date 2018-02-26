@@ -26,13 +26,13 @@ describe('push#units/platforms/xiaomi', function () {
     it('should be done without error', done =>
       pusher.xiaomi.send(params, setTimeout(done, 5000))))
 
-  return describe('xiaomi@get invalid devices', () =>
+  describe('xiaomi@get invalid devices', () =>
     it('return device list', done =>
       pusher.xiaomi.getInvalidDevices(function (error, devices) {
         if (error) {
           return done(error)
         }
         assert.strictEqual(devices instanceof Array, true)
-        return done()
+        done()
       })))
 })
