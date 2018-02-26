@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "mocha": "~2.3.4",
+    "nock": "^9.2.1",
     "prettier-standard": "^8.0.0",
     "should": "~8.0.2",
     "standard": "^11.0.0"
