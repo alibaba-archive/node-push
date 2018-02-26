@@ -4,7 +4,8 @@
   "description": "Pushfication written in Nodejs",
   "main": "lib/index.js",
   "scripts": {
-    "prepublish": "rm -rf lib && coffee -o lib -c src",
+    "lint": "standard",
+    "prettier": "prettier-standard 'lib/**/*.js' 'test/**/*.js'",
     "test": "make test"
   },
   "repository": {
@@ -25,7 +26,9 @@
   },
   "devDependencies": {
     "mocha": "~2.3.4",
-    "should": "~8.0.2"
+    "prettier-standard": "^8.0.0",
+    "should": "~8.0.2",
+    "standard": "^11.0.0"
   },
   "dependencies": {
     "apn": "~1.7.5",
@@ -35,5 +38,10 @@
   "files": [
     "lib",
     "README.md"
-  ]
+  ],
+  "standard": {
+    "env": [
+      "mocha"
+    ]
+  }
 }
