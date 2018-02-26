@@ -25,7 +25,7 @@ describe('push#units/platforms/gcm', function () {
           message: 'hello world'
         }
       }
-      pusher.gcm.send(params, setTimeout(done, 5000))
+      pusher.gcm.send(params, setTimeout(done, 500))
     })
   })
 

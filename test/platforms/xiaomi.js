@@ -36,7 +36,7 @@ describe('push#units/platforms/xiaomi', function () {
     })
 
     it('should be done without error', done => {
-      pusher.xiaomi.send(params, setTimeout(done, 2000))
+      pusher.xiaomi.send(params, setTimeout(done, 200))
     })
   })
 
