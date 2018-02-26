@@ -67,9 +67,11 @@ class ApplePushNotification extends EventEmitter
     note.alert = data.alert
     note.payload = data.extra if data.extra
 
+    note.contentAvailable = 1 if data.contentAvailable
+
     if data.slient or @options.slient
       note.sound = ""
-      note['content-available'] = 1
+
     @connection.pushNotification(note, myDevice)
 
 applePN = new ApplePushNotification
