@@ -1,6 +1,6 @@
 {
   "name": "node-push",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "Pushfication written in Nodejs",
   "main": "lib/index.js",
   "scripts": {
