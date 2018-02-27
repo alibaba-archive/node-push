@@ -4,15 +4,16 @@
   "description": "Pushfication written in Nodejs",
   "main": "lib/index.js",
   "scripts": {
-    "prepublish": "rm -rf lib && coffee -o lib -c src",
-    "test": "make test"
+    "lint": "standard",
+    "prettier": "prettier-standard 'lib/**/*.js' 'test/**/*.js'",
+    "test": "mocha test/**/*.js"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/teambition/node-push"
   },
   "engines": {
-    "node": ">=0.10.40"
+    "node": ">=6"
   },
   "keywords": [
     "message",
@@ -24,10 +25,12 @@
     "url": "https://github.com/teambition/node-push/issues"
   },
   "devDependencies": {
-    "cake-dog": "~0.4.5",
+    "mocha": "~2.3.4",
+    "nock": "^9.2.1",
+    "prettier-standard": "^8.0.0",
     "should": "~8.0.2",
-    "coffee-script": "~1.10.0",
-    "mocha": "~2.3.4"
+    "sinon": "^4.4.2",
+    "standard": "^11.0.0"
   },
   "dependencies": {
     "apn": "~1.7.5",
@@ -37,5 +40,10 @@
   "files": [
     "lib",
     "README.md"
-  ]
+  ],
+  "standard": {
+    "env": [
+      "mocha"
+    ]
+  }
 }
