@@ -1,6 +1,6 @@
 {
   "name": "node-push",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "Pushfication written in Nodejs",
   "main": "lib/index.js",
   "scripts": {
@@ -25,17 +25,17 @@
     "url": "https://github.com/teambition/node-push/issues"
   },
   "devDependencies": {
-    "mocha": "~2.3.4",
-    "nock": "^9.2.1",
-    "prettier-standard": "^8.0.0",
-    "should": "~8.0.2",
-    "sinon": "^4.4.2",
-    "standard": "^11.0.0"
+    "mocha": "~5.2.0",
+    "nock": "^10.0.6",
+    "prettier-standard": "^9.1.1",
+    "should": "~13.2.3",
+    "sinon": "^7.2.3",
+    "standard": "^12.0.1"
   },
   "dependencies": {
-    "apn": "~1.7.5",
-    "request": "^2.81.0",
-    "socks5-https-client": "~1.1.3"
+    "apn": "~1.7.8",
+    "request": "^2.88.0",
+    "socks5-https-client": "~1.2.1"
   },
   "files": [
     "lib",
